@@ -1,3 +1,4 @@
+
 # 🌾 KrishiGrowAI - Smart Farming Solutions
 
 <div align="center">
@@ -145,7 +146,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ```
 MIT License
 
-Copyright (c) 2024 KrishiGrowAI
+Copyright (c) 2025 SNEHASISH DEY
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -159,18 +160,8 @@ in the Software without restriction...
 <div align="center">
 
 ### Get in Touch
-
-📧 **Email**: [info@krishigrow.ai](mailto:info@krishigrow.ai)  
-🌐 **Website**: [www.krishigrowai.com](https://krishigrowai.com)  
-📱 **Phone**: +91-1234567890  
-🏢 **Location**: Bangalore, India
-
-### Connect With Us
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/company/krishigrowai)
-[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/krishigrowai)
-[![Facebook](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://facebook.com/krishigrowai)
-[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/krishigrowai)
+📱 **Phone**: +91-7908242467
+🏢 **Location**: Kolkata, India
 
 </div>
 
@@ -202,7 +193,7 @@ We'd like to thank the following:
 ---
 
 
-**© 2024 KrishiGrowAI. All rights reserved.**
+**© 2025 KrishiGrowAI. All rights reserved.**
 
 
 
