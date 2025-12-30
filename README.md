@@ -1,16 +1,209 @@
-# SIH2025-codeXplores
-Al-Based Crop Recommendation for Farmers
-Background -
+# 🌾 KrishiGrowAI - Smart Farming Solutions
 
-Farmers often face challenges in accessing timely, personalized, and accurate agricultural support. Language barriers, lack of technical knowledge, and limited reach of conventional advisory services reduce the effectiveness of existing solutions. Emerging generative AI technologies present an opportunity to deliver hyper-localized guidance in natural language, paired with visual understanding to assist with field-level problems like crop disease detection.
+<div align="center">
 
-Detailed Description -
+![KrishiGrowAI Banner](https://img.shields.io/badge/KrishiGrowAI-Smart%20Farming-success?style=for-the-badge&logo=leaf&logoColor=white)
 
-The objective is to create an AI-driven decision support system that determines real-time soil properties (pH, moisture, nutrient content) based on satellite data (e.g., Soil Grids, Bhuvan APIs) or IoT sensors. The system must also account for localized weather forecasts, past crop rotation data to preserve soil fertility, and existing market demand and price trends obtained through APIs or scraping agri-market websites.
+[![Made with Love](https://img.shields.io/badge/Made%20with-❤️-red?style=flat-square)](https://github.com/krishigrowai)
+[![Python](https://img.shields.io/badge/Python-3.8+-blue?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![Django](https://img.shields.io/badge/Django-4.0+-green?style=flat-square&logo=django&logoColor=white)](https://www.djangoproject.com/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow?style=flat-square&logo=javascript&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![License](https://img.shields.io/badge/License-MIT-purple?style=flat-square)](LICENSE)
 
-A machine learning model will provide the most appropriate crops for specified conditions, forecasting yield, profit margins, and sustainability scores. The solution should comprise a mobile application with a simple multilingual interface where farmers can enter or retrieve relevant data, see recommendations, and operate offline in low-connectivity regions.
 
-Expected Solution -
+</div>
 
-A mobile-based prototype offering farmers customized, science-guided crop advice, increasing income, making resources more efficient, and facilitating sustainable agriculture.
-The solution should deliver an AI-powered platform that integrates text and image-based interactions tailored for agricultural use. It must support voice and chat interfaces in local languages, enabling farmers to ask questions and receive actionable responses
+---
+
+## 🌟 About
+
+**KrishiGrowAI**  is an AI-powered smart agriculture platform designed to assist farmers with crop recommendations, weather insights, market trends, and smart decision-making.
+This project is developed as part of SIH 2025 (Smart India Hackathon) under the team CodeXplores.
+
+### Why KrishiGrowAI?
+
+- 🎯 **Data-Driven Decisions** - AI algorithms analyze soil, weather, and market conditions
+- 💰 **Maximize Profits** - Real-time market price tracking and crop recommendations
+- 🌍 **Sustainable Farming** - Promote eco-friendly agricultural practices
+- 📱 **Easy to Use** - Intuitive interface designed for farmers of all tech levels
+
+---
+
+## ✨ Features
+
+### 🤖 AI-Powered Crop Recommendations
+- Smart crop suggestions based on:
+  - Soil type and pH levels
+  - Local weather patterns
+  - Seasonal variations
+  - Budget constraints
+  - Farm size optimization
+
+### 🌤️ Real-Time Weather Integration
+- Live weather forecasts
+- 7-day weather predictions
+- Climate-specific farming advice
+- Rainfall probability tracking
+- Temperature and humidity monitoring
+
+### 📈 Market Price Analysis
+- Live commodity prices from major mandis
+- Price trend visualization
+- Historical price data (7-day trends)
+- Market comparison tools
+- Export data functionality
+- Best value recommendations
+
+### 💬 AI Chatbot Assistant
+- 24/7 farming guidance
+- Pest management advice
+- Fertilizer recommendations
+- Irrigation tips
+- Crop-specific queries
+
+### 👥 Community & Consultancy
+- Farmer community forum
+- Expert consultations
+- Knowledge sharing platform
+- Experience-based learning
+- Peer support system
+
+### 📊 Financial Analysis
+- ROI calculator
+- Break-even analysis
+- Cost estimation
+- Profit projections
+- Budget optimization
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+
+### Backend
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white)
+
+### Database
+![SQLite](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white)
+
+### APIs & Libraries
+- **Weather API** - Real-time weather data
+- **Market Data API** - Live commodity prices
+- **Chart.js** - Data visualization
+- **Material Icons** - Modern UI icons
+
+---
+
+
+## 📁 Project Structure
+
+```
+krishigrowai/
+├── 📂 krishimitra_backend/      # Django backend
+│   ├── 📂 accounts/             # User authentication
+│   │   ├── 📂 templates/
+│   │   │   └── 📂 accounts/
+│   │   │       ├── index.html
+│   │   │       ├── signin.html
+│   │   │       └── password_reset.html
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   ├── 📂 static/               # Static files
+│   │   ├── style.css
+│   │   └── script.js
+│   ├── 📂 migrations/           # Database migrations
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── 📂 UI_Design/                # Frontend assets
+├── 📄 db.sqlite3                # SQLite database
+├── 📄 manage.py                 # Django management script
+├── 📄 requirements.txt          # Python dependencies
+└── 📄 README.md                 # Project documentation
+```
+
+
+
+
+## 📄 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+```
+MIT License
+
+Copyright (c) 2024 KrishiGrowAI
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction...
+```
+
+---
+
+## 📞 Contact & Support
+
+<div align="center">
+
+### Get in Touch
+
+📧 **Email**: [info@krishigrow.ai](mailto:info@krishigrow.ai)  
+🌐 **Website**: [www.krishigrowai.com](https://krishigrowai.com)  
+📱 **Phone**: +91-1234567890  
+🏢 **Location**: Bangalore, India
+
+### Connect With Us
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/company/krishigrowai)
+[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/krishigrowai)
+[![Facebook](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://facebook.com/krishigrowai)
+[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/krishigrowai)
+
+</div>
+
+---
+
+## 🙏 Acknowledgments
+
+We'd like to thank the following:
+
+- 🌾 **Indian Farmers** - For inspiring this project
+- 🎓 **Agricultural Experts** - For domain knowledge and guidance
+- 💻 **Open Source Community** - For amazing tools and libraries
+- 🏆 **Hackathon Organizers** - For the opportunity to build this solution
+- ❤️ **All Contributors** - For making this project better
+
+---
+
+
+
+---
+
+
+### ⭐ Star us on GitHub — it motivates us a lot!
+
+**Made with ❤️ for Farmers | Empowering Agriculture Through Technology**
+
+</div>
+
+---
+
+
+**© 2024 KrishiGrowAI. All rights reserved.**
+
+
+
+</div>
