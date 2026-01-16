@@ -19,6 +19,15 @@ from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'krishimitra_backend.settings')
 
+# Collect static files on startup for Vercel
+if os.environ.get('VERCEL'):
+    import subprocess
+    try:
+        subprocess.run(['python', 'manage.py', 'collectstatic', '--noinput'], 
+                      cwd=str(BASE_DIR), check=False, capture_output=True)
+    except:
+        pass
+
 application = get_wsgi_application()
 
 # Vercel serverless function handler
