@@ -12,30 +12,17 @@ def home_page(request):
 # Sign In Page
 def signin_page(request):
     if request.method == "POST":
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        user = authenticate(username=email, password=password)
-        if user:
-            login(request, user)
-            return redirect('home')  # after login go to homepage
-        else:
-            messages.error(request, "Invalid credentials")
+        # Demo mode - database not available on Vercel
+        messages.info(request, "Demo mode: Authentication requires database setup")
+        return redirect('home')
     return render(request, "accounts/signin.html")  # Sign In template
 
 
 # Sign Up Page
 def signup_page(request):
     if request.method == "POST":
-        name = request.POST.get("name")
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        if User.objects.filter(username=email).exists():
-            messages.error(request, "Email already exists")
-            return redirect('signup')
-        user = User.objects.create_user(username=email, email=email, password=password)
-        user.first_name = name
-        user.save()
-        messages.success(request, "Account created successfully! Please sign in.")
+        # Demo mode - database not available on Vercel
+        messages.info(request, "Demo mode: Registration requires database setup")
         return redirect('signin')
     return render(request, "accounts/signin.html")  # Reuse the same template with toggle
 
