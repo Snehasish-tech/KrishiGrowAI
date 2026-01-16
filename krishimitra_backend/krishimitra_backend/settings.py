@@ -25,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-$i94$00=%dk#a$5&7t5+$b^39ez-8y&)%^5_bjct(o3k6h!=c*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True  # Enable for now to see errors
 
-ALLOWED_HOSTS = ['.vercel.app', '.now.sh', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['*']  # Allow all hosts for testing
 
 
 # Application definition
@@ -133,15 +133,23 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# For Vercel deployment
+if os.environ.get('VERCEL'):
+    STATIC_ROOT = '/tmp/staticfiles'
+else:
+    STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 STATICFILES_DIRS = []
 
-# Collect static files from apps
-if (BASE_DIR / 'accounts' / 'static').exists():
-    STATICFILES_DIRS.append(BASE_DIR / 'accounts' / 'static')
+# Find and add static directories
+accounts_static = BASE_DIR / 'accounts' / 'static'
+if accounts_static.exists():
+    STATICFILES_DIRS.append(accounts_static)
 
-# WhiteNoise configuration
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage' 
+# Disable WhiteNoise manifest for now
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_AUTOREFRESH = True 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
