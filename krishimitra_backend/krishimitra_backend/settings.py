@@ -134,22 +134,18 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# For Vercel deployment
-if os.environ.get('VERCEL'):
-    STATIC_ROOT = '/tmp/staticfiles'
-else:
-    STATIC_ROOT = BASE_DIR / 'staticfiles'
-
+# For local development - don't use STATIC_ROOT on Vercel
+STATIC_ROOT = None
 STATICFILES_DIRS = []
 
-# Find and add static directories
-accounts_static = BASE_DIR / 'accounts' / 'static'
-if accounts_static.exists():
-    STATICFILES_DIRS.append(accounts_static)
+# Add all static directories
+for app in INSTALLED_APPS:
+    app_path = BASE_DIR / app.split('.')[-1] / 'static'
+    if app_path.exists():
+        STATICFILES_DIRS.append(app_path)
 
-# Disable WhiteNoise manifest for now
-WHITENOISE_USE_FINDERS = True
-WHITENOISE_AUTOREFRESH = True 
+# Simple storage without manifest for Vercel
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage' 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
