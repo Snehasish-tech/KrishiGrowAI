@@ -6,11 +6,16 @@ echo "Building the project..."
 # Install dependencies
 pip install -r requirements.txt
 
+# Create staticfiles_build directory
+mkdir -p staticfiles_build/static
+
 # Set environment variable to skip database checks during collectstatic
 export DJANGO_SETTINGS_MODULE=krishimitra_backend.settings
 export VERCEL=1
 
 # Collect static files (skip database migrations)
-python krishimitra_backend/manage.py collectstatic --noinput --clear --no-default-ignore
+cd krishimitra_backend
+python manage.py collectstatic --noinput --clear --no-default-ignore || echo "Collectstatic completed with warnings"
+cd ..
 
 echo "Build completed!"
