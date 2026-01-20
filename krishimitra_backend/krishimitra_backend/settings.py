@@ -30,7 +30,7 @@ DEBUG = True  # Enable for now to see errors
 ALLOWED_HOSTS = ['*']  # Allow all hosts for testing
 
 # Gemini API Configuration
-GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', 'AIzaSyCK4AGJT3A_-wECFOZugCD8H-B-1wsZOBI')
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 
 
 # Application definition

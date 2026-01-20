@@ -14,7 +14,7 @@ After deploying to Vercel, go to your project settings:
 
    | Name | Value | Environment |
    |------|-------|-------------|
-   | `GEMINI_API_KEY` | `AIzaSyCK4AGJT3A_-wECFOZugCD8H-B-1wsZOBI` | Production, Preview, Development |
+   | `GEMINI_API_KEY` | `your-real-gemini-key` (paste only inside Vercel) | Production, Preview, Development |
    | `WEATHER_API_KEY` | Your weather API key (optional) | Production, Preview, Development |
 
 3. Click **Save**
@@ -33,7 +33,7 @@ The config.js file is in .gitignore, so it won't be pushed to GitHub.
 
 2. Edit `.env` and add your actual API keys:
    ```
-   GEMINI_API_KEY=AIzaSyCK4AGJT3A_-wECFOZugCD8H-B-1wsZOBI
+   GEMINI_API_KEY=your-real-gemini-key
    WEATHER_API_KEY=your_actual_key
    ```
 
