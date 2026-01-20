@@ -37,6 +37,9 @@ staticfiles_build/
 .env.local
 .env.*.local
 
+# API Keys and Configuration
+krishimitra_backend/accounts/static/accounts/js/config.js
+
 # IDE
 .vscode/
 .idea/

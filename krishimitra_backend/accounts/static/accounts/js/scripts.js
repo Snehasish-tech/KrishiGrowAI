@@ -2,6 +2,13 @@
 let chatbotOpen = false;
 let isTyping = false;
 
+// Gemini API Configuration
+// Get your API key from: https://makersuite.google.com/app/apikey
+const GEMINI_API_KEY = typeof CONFIG !== 'undefined' ? CONFIG.GEMINI_API_KEY : 'YOUR_GEMINI_API_KEY_HERE';
+const GEMINI_API_URL = typeof CONFIG !== 'undefined' && CONFIG.GEMINI_API_URL
+    ? CONFIG.GEMINI_API_URL
+    : 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent';
+
 // Comprehensive Crop Database
 const cropDatabase = {
     'rice': {
@@ -138,18 +145,6 @@ const cropDatabase = {
     }
 };
 
-// Market Price Database (Simulated Real-time Data)
-const marketData = [
-    { crop: 'Wheat', price: 2150, trend: 'up', change: 5, market: 'Delhi', updated: new Date() },
-    { crop: 'Rice', price: 1890, trend: 'down', change: -2, market: 'Punjab', updated: new Date() },
-    { crop: 'Cotton', price: 5200, trend: 'up', change: 8, market: 'Gujarat', updated: new Date() },
-    { crop: 'Sugarcane', price: 340, trend: 'stable', change: 0, market: 'UP', updated: new Date() },
-    { crop: 'Maize', price: 1750, trend: 'up', change: 3, market: 'Karnataka', updated: new Date() },
-    { crop: 'Soybean', price: 4200, trend: 'up', change: 6, market: 'MP', updated: new Date() },
-    { crop: 'Tomato', price: 2800, trend: 'down', change: -12, market: 'Maharashtra', updated: new Date() },
-    { crop: 'Onion', price: 3500, trend: 'up', change: 15, market: 'Karnataka', updated: new Date() }
-];
-
 // Chatbot Responses Database
 const chatbotResponses = {
     greetings: [
@@ -195,12 +190,13 @@ const chatbotResponses = {
 // Initialize the website
 document.addEventListener('DOMContentLoaded', function () {
     initializeAnimations();
-    populateMarketData();
-    updateWeatherData();
     animateCounters();
-
-    // Set current date for weather
     updateWeather();
+
+    if (document.getElementById('marketGrid')) {
+        initializeMarket();
+        console.log('✅ Modern market section initialized!');
+    }
 });
 
 // Smooth scrolling function
@@ -1315,79 +1311,6 @@ function generateRandomWeather() {
     };
 }
 
-// Update weather data on load
-function updateWeatherData() {
-    updateWeather();
-}
-
-// Populate market data
-function populateMarketData() {
-    const tableBody = document.getElementById('priceTableBody');
-    let html = '';
-
-    marketData.forEach(item => {
-        const trendIcon = {
-            'up': '📈',
-            'down': '📉',
-            'stable': '➡'
-        };
-
-        const trendClass = {
-            'up': 'trend-up',
-            'down': 'trend-down',
-            'stable': 'trend-stable'
-        };
-
-        const changeText = item.change > 0
-            ? `+${item.change}%`
-            : item.change < 0
-                ? `${item.change}%`
-                : 'No change';
-
-
-        html += `
-                    <tr>
-                        <td><strong>${item.crop}</strong></td>
-                        <td>₹${item.price.toLocaleString()}</td>
-                        <td class="${trendClass[item.trend]}">
-                            ${trendIcon[item.trend]} ${changeText}
-                        </td>
-                        <td>${item.market}</td>
-                        <td>${item.updated.toLocaleDateString()}</td>
-                    </tr>
-                `;
-    });
-
-    tableBody.innerHTML = html;
-}
-
-// Update market prices with animation
-function updateMarketPrices() {
-    const button = event.target;
-    const originalText = button.innerHTML;
-    button.innerHTML = '🔄 Refreshing...';
-    button.disabled = true;
-
-    // Simulate price updates
-    setTimeout(() => {
-        marketData.forEach(item => {
-            const change = (Math.random() - 0.5) * 0.1; // ±5% change
-            item.price = Math.round(item.price * (1 + change));
-            item.change = Math.round(change * 100);
-            item.trend = change > 0.02 ? 'up' : change < -0.02 ? 'down' : 'stable';
-            item.updated = new Date();
-        });
-
-        populateMarketData();
-
-        button.innerHTML = 'Updated!';
-        setTimeout(() => {
-            button.innerHTML = originalText;
-            button.disabled = false;
-        }, 1000);
-    }, 2000);
-}
-
 // Chatbot functionality
 function toggleChatbot() {
     const chatWindow = document.getElementById('chatbotWindow');
@@ -1432,7 +1355,7 @@ async function sendMessage() {
 function addMessage(message, sender) {
     const messagesContainer = document.getElementById('chatMessages');
     const messageDiv = document.createElement('div');
-    messageDiv.className = message`${sender} ` - message;
+    messageDiv.className = `${sender}-message`;
     messageDiv.innerHTML = message;
 
     messagesContainer.appendChild(messageDiv);
@@ -1468,6 +1391,70 @@ function hideTyping() {
 }
 
 async function generateBotResponse(userMessage) {
+    try {
+        // Create context for farming assistant
+        const systemContext = `You are KrishiGrowAI Assistant, an expert AI farming assistant specializing in Indian agriculture. 
+        You help farmers with:
+        - Crop recommendations based on soil, weather, and season
+        - Soil health and pH management
+        - Pest and disease control
+        - Market price insights
+        - Irrigation and water management
+        - Fertilizer recommendations
+        - Weather-based farming decisions
+        
+        Provide practical, actionable advice in a friendly, encouraging tone. Use emojis appropriately. 
+        Keep responses concise (2-4 sentences) but informative. Focus on Indian farming conditions and crops.`;
+
+        const prompt = `${systemContext}\n\nFarmer's Question: ${userMessage}\n\nYour Response:`;
+
+        // Call Gemini API
+        const apiUrl = GEMINI_API_URL;
+        const apiKey = GEMINI_API_KEY;
+        
+        const response = await fetch(`${apiUrl}?key=${apiKey}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{
+                        text: prompt
+                    }]
+                }],
+                generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 300,
+                    topP: 0.8,
+                    topK: 40
+                }
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('API request failed');
+        }
+
+        const data = await response.json();
+        
+        // Extract the generated text from Gemini response
+        if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+            return data.candidates[0].content.parts[0].text;
+        } else {
+            throw new Error('Invalid API response format');
+        }
+
+    } catch (error) {
+        console.error('Gemini API Error:', error);
+        
+        // Fallback to local responses if API fails
+        return generateLocalResponse(userMessage);
+    }
+}
+
+// Fallback function for local responses when API is unavailable
+function generateLocalResponse(userMessage) {
     const message = userMessage.toLowerCase();
 
     // Simple keyword matching for responses
@@ -1518,7 +1505,7 @@ async function generateBotResponse(userMessage) {
 
     // Thank you responses
     if (message.includes('thank') || message.includes('thanks')) {
-        return "You're very welcome!  I'm always here to help with your farming needs. Feel free to ask more questions anytime! 🌾";
+        return "You're very welcome! 😊 I'm always here to help with your farming needs. Feel free to ask more questions anytime! 🌾";
     }
 
     // Default response with helpful suggestions
@@ -1529,11 +1516,6 @@ function getRandomResponse(responseArray) {
     return responseArray[Math.floor(Math.random() * responseArray.length)];
 }
 
-// Initialize market data and weather on load
-window.addEventListener('load', function () {
-    populateMarketData();
-    updateWeatherData();
-});
 
  let communityOpen = false;
         let activeTab = 'community';
@@ -2626,9 +2608,3 @@ marketModalStyles.textContent = `
 document.head.appendChild(marketModalStyles);
 
 // Initialize market on page load
-document.addEventListener('DOMContentLoaded', function() {
-    if (document.getElementById('marketGrid')) {
-        initializeMarket();
-        console.log('✅ Modern market section initialized!');
-    }
-});
