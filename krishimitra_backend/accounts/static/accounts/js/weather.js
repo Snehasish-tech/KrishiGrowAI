@@ -3,13 +3,13 @@
 function updateWeather() {
     console.log('Updating weather data...');
     // Weather update functionality
-    alert('Weather data updated!');
+    // Weather data flows silently to avoid intrusive popups
 }
 
 function updatesevenWeather() {
     console.log('Updating 7-day forecast...');
     // 7-day forecast update functionality
-    alert('7-day forecast updated!');
+    // Silent update keeps UX smooth
 }
 
 // Initialize weather on page load
