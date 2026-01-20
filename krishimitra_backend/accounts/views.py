@@ -77,6 +77,8 @@ def chatbot_api(request):
             
             # Call Gemini API
             api_key = settings.GEMINI_API_KEY
+            if not api_key:
+                return JsonResponse({'error': 'Gemini API key missing on server'}, status=500)
             api_url = f'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={api_key}'
             
             response = requests.post(
@@ -104,13 +106,17 @@ def chatbot_api(request):
                 else:
                     return JsonResponse({'error': 'Invalid API response'}, status=500)
             else:
-                return JsonResponse({'error': f'API error: {response.status_code}'}, status=500)
+                # Include Gemini's response body for debugging
+                return JsonResponse({
+                    'error': f'Gemini API error ({response.status_code})',
+                    'details': response.text
+                }, status=500)
                 
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
         except requests.RequestException as e:
-            return JsonResponse({'error': f'Request failed: {str(e)}'}, status=500)
+            return JsonResponse({'error': 'Request to Gemini failed', 'details': str(e)}, status=500)
         except Exception as e:
-            return JsonResponse({'error': f'Server error: {str(e)}'}, status=500)
+            return JsonResponse({'error': 'Server error', 'details': str(e)}, status=500)
     
     return JsonResponse({'error': 'Only POST method allowed'}, status=405)

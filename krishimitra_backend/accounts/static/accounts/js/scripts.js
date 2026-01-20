@@ -1403,11 +1403,13 @@ async function generateBotResponse(userMessage) {
             })
         });
 
-        if (!response.ok) {
-            throw new Error('API request failed');
-        }
-
         const data = await response.json();
+
+        if (!response.ok) {
+            const errorMessage = data.error || 'API request failed';
+            const details = data.details ? `\nDetails: ${data.details}` : '';
+            throw new Error(`${errorMessage}${details}`);
+        }
         
         if (data.response) {
             return data.response;
