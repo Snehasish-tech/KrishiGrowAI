@@ -2,13 +2,6 @@
 let chatbotOpen = false;
 let isTyping = false;
 
-// Gemini API Configuration
-// Get your API key from: https://makersuite.google.com/app/apikey
-const GEMINI_API_KEY = typeof CONFIG !== 'undefined' ? CONFIG.GEMINI_API_KEY : 'YOUR_GEMINI_API_KEY_HERE';
-const GEMINI_API_URL = typeof CONFIG !== 'undefined' && CONFIG.GEMINI_API_URL
-    ? CONFIG.GEMINI_API_URL
-    : 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent';
-
 // Comprehensive Crop Database
 const cropDatabase = {
     'rice': {
