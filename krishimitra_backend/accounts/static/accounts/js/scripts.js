@@ -1392,43 +1392,14 @@ function hideTyping() {
 
 async function generateBotResponse(userMessage) {
     try {
-        // Create context for farming assistant
-        const systemContext = `You are KrishiGrowAI Assistant, an expert AI farming assistant specializing in Indian agriculture. 
-        You help farmers with:
-        - Crop recommendations based on soil, weather, and season
-        - Soil health and pH management
-        - Pest and disease control
-        - Market price insights
-        - Irrigation and water management
-        - Fertilizer recommendations
-        - Weather-based farming decisions
-        
-        Provide practical, actionable advice in a friendly, encouraging tone. Use emojis appropriately. 
-        Keep responses concise (2-4 sentences) but informative. Focus on Indian farming conditions and crops.`;
-
-        const prompt = `${systemContext}\n\nFarmer's Question: ${userMessage}\n\nYour Response:`;
-
-        // Call Gemini API
-        const apiUrl = GEMINI_API_URL;
-        const apiKey = GEMINI_API_KEY;
-        
-        const response = await fetch(`${apiUrl}?key=${apiKey}`, {
+        // Call Django backend API instead of Gemini directly
+        const response = await fetch('/api/chatbot/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                contents: [{
-                    parts: [{
-                        text: prompt
-                    }]
-                }],
-                generationConfig: {
-                    temperature: 0.7,
-                    maxOutputTokens: 300,
-                    topP: 0.8,
-                    topK: 40
-                }
+                message: userMessage
             })
         });
 
@@ -1438,15 +1409,14 @@ async function generateBotResponse(userMessage) {
 
         const data = await response.json();
         
-        // Extract the generated text from Gemini response
-        if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-            return data.candidates[0].content.parts[0].text;
+        if (data.response) {
+            return data.response;
         } else {
             throw new Error('Invalid API response format');
         }
 
     } catch (error) {
-        console.error('Gemini API Error:', error);
+        console.error('Chatbot API Error:', error);
         
         // Fallback to local responses if API fails
         return generateLocalResponse(userMessage);
