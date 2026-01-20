@@ -100,11 +100,20 @@ def chatbot_api(request):
             
             if response.status_code == 200:
                 result = response.json()
-                if result.get('candidates') and result['candidates'][0].get('content'):
-                    bot_response = result['candidates'][0]['content']['parts'][0]['text']
-                    return JsonResponse({'response': bot_response})
-                else:
-                    return JsonResponse({'error': 'Invalid API response'}, status=500)
+
+                candidates = result.get('candidates') or []
+                if candidates:
+                    content = candidates[0].get('content') or {}
+                    parts = content.get('parts') or []
+                    if parts and parts[0].get('text'):
+                        bot_response = parts[0]['text']
+                        return JsonResponse({'response': bot_response})
+
+                # If we reach here, the structure is not what we expect
+                return JsonResponse({
+                    'error': 'Invalid response format from Gemini',
+                    'details': result
+                }, status=500)
             else:
                 # Include Gemini's response body for debugging
                 return JsonResponse({
