@@ -9,7 +9,7 @@ const CONFIG = {
     GEMINI_API_KEY: 'YOUR_GEMINI_API_KEY_HERE',
     
     // API Endpoint (don't change this unless using a different model)
-    GEMINI_API_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent',
+    GEMINI_API_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
     
     // Optional: Weather API key if you want to integrate real weather data
     // Get from: https://openweathermap.org/api
