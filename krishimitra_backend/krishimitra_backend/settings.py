@@ -33,15 +33,7 @@ DEBUG = not os.environ.get('VERCEL')  # Debug only in development
 ALLOWED_HOSTS = ['*'] if DEBUG else ['.vercel.app', '.now.sh']  # Allow all in dev, specific in prod
 
 # Gemini API Configuration
-# Load local .env for development (optional). Ensure .env is in .gitignore.
-try:
-    from dotenv import load_dotenv
-    # .env is located in the repository root (one level above BASE_DIR)
-    load_dotenv(str(BASE_DIR.parent / '.env'))
-except Exception:
-    # If python-dotenv is not available or .env missing, continue silently
-    pass
-
+# API key should be set as environment variable in Vercel
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 
 # Quick debug (DO NOT expose real keys in public logs)

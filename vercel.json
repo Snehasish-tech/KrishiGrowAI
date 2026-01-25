@@ -2,18 +2,26 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/wsgi.py",
+      "src": "krishimitra_backend/krishimitra_backend/wsgi.py",
       "use": "@vercel/python",
-      "config": { "maxLambdaSize": "15mb", "runtime": "python3.11" }
+      "config": {
+        "maxLambdaSize": "15mb",
+        "runtime": "python3.11"
+      }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "api/wsgi.py"
+      "dest": "krishimitra_backend/krishimitra_backend/wsgi.py"
     }
   ],
   "env": {
     "VERCEL": "1"
+  },
+  "functions": {
+    "krishimitra_backend/krishimitra_backend/wsgi.py": {
+      "maxDuration": 30
+    }
   }
 }
