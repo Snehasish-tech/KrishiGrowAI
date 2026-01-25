@@ -18,8 +18,8 @@ from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load from parent directory
-load_dotenv(BASE_DIR.parent / '.env')
+# Load environment variables from .env file
+load_dotenv(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -28,20 +28,18 @@ load_dotenv(BASE_DIR.parent / '.env')
 SECRET_KEY = 'django-insecure-$i94$00=%dk#a$5&7t5+$b^39ez-8y&)%^5_bjct(o3k6h!=c*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = not os.environ.get('VERCEL')  # Debug only in development
+DEBUG = True  # Enable for now to see errors
 
-ALLOWED_HOSTS = ['*'] if DEBUG else ['.vercel.app', '.now.sh']  # Allow all in dev, specific in prod
+ALLOWED_HOSTS = ['*']  # Allow all hosts for testing
 
 # Gemini API Configuration
-# API key should be set as environment variable in Vercel
-GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
 
-# Quick debug (DO NOT expose real keys in public logs)
-if GEMINI_API_KEY:
-    preview = GEMINI_API_KEY[:12] + '...' if len(GEMINI_API_KEY) > 12 else '***'
-    print("🔑 Gemini API Key loaded: Yes\n   Key preview:", preview)
-else:
-    print("🔑 Gemini API Key loaded: No")
+# Print for debugging (remove in production)
+if DEBUG:
+    print(f"🔑 Gemini API Key loaded: {'Yes' if GEMINI_API_KEY else 'No'}")
+    if GEMINI_API_KEY:
+        print(f"   Key preview: {GEMINI_API_KEY[:10]}...")
 
 
 # Application definition
@@ -72,10 +70,8 @@ ROOT_URLCONF = 'krishimitra_backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            BASE_DIR / 'templates',  # Global templates
-        ],
-        'APP_DIRS': True,  # Look in app directories too
+        'DIRS': [BASE_DIR / "templates"],
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -149,30 +145,18 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Static files configuration for Vercel
-if os.environ.get('VERCEL'):
-    STATIC_ROOT = BASE_DIR / 'staticfiles'
-else:
-    STATIC_ROOT = None
+# For local development - don't use STATIC_ROOT on Vercel
+STATIC_ROOT = None
+STATICFILES_DIRS = []
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
-
-# Add app-specific static directories if they exist
+# Add all static directories
 for app in INSTALLED_APPS:
-    if app.startswith('django.contrib'):
-        continue
-    app_name = app.split('.')[-1]
-    app_static_path = BASE_DIR / app_name / 'static'
-    if app_static_path.exists():
-        STATICFILES_DIRS.append(app_static_path)
+    app_path = BASE_DIR / app.split('.')[-1] / 'static'
+    if app_path.exists():
+        STATICFILES_DIRS.append(app_path)
 
-# Use WhiteNoise for static files on Vercel
-if os.environ.get('VERCEL'):
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-else:
-    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+# Simple storage without manifest for Vercel
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # CSRF trusted origins for development
 CSRF_TRUSTED_ORIGINS = [
