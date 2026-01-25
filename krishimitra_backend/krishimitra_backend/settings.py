@@ -25,12 +25,28 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-$i94$00=%dk#a$5&7t5+$b^39ez-8y&)%^5_bjct(o3k6h!=c*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  # Enable for now to see errors
+DEBUG = not os.environ.get('VERCEL')  # Debug only in development
 
-ALLOWED_HOSTS = ['*']  # Allow all hosts for testing
+ALLOWED_HOSTS = ['*'] if DEBUG else ['.vercel.app', '.now.sh']  # Allow all in dev, specific in prod
 
 # Gemini API Configuration
+# Load local .env for development (optional). Ensure .env is in .gitignore.
+try:
+    from dotenv import load_dotenv
+    # .env is located in the repository root (one level above BASE_DIR)
+    load_dotenv(str(BASE_DIR.parent / '.env'))
+except Exception:
+    # If python-dotenv is not available or .env missing, continue silently
+    pass
+
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
+
+# Quick debug (DO NOT expose real keys in public logs)
+if GEMINI_API_KEY:
+    preview = GEMINI_API_KEY[:12] + '...' if len(GEMINI_API_KEY) > 12 else '***'
+    print("🔑 Gemini API Key loaded: Yes\n   Key preview:", preview)
+else:
+    print("🔑 Gemini API Key loaded: No")
 
 
 # Application definition
@@ -61,8 +77,10 @@ ROOT_URLCONF = 'krishimitra_backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates"],
-        'APP_DIRS': True,
+        'DIRS': [
+            BASE_DIR / 'templates',  # Global templates
+        ],
+        'APP_DIRS': True,  # Look in app directories too
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -137,18 +155,30 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# For local development - don't use STATIC_ROOT on Vercel
-STATIC_ROOT = None
-STATICFILES_DIRS = []
+# Static files configuration for Vercel
+if os.environ.get('VERCEL'):
+    STATIC_ROOT = BASE_DIR / 'staticfiles'
+else:
+    STATIC_ROOT = None
 
-# Add all static directories
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+# Add app-specific static directories if they exist
 for app in INSTALLED_APPS:
-    app_path = BASE_DIR / app.split('.')[-1] / 'static'
-    if app_path.exists():
-        STATICFILES_DIRS.append(app_path)
+    if app.startswith('django.contrib'):
+        continue
+    app_name = app.split('.')[-1]
+    app_static_path = BASE_DIR / app_name / 'static'
+    if app_static_path.exists():
+        STATICFILES_DIRS.append(app_static_path)
 
-# Simple storage without manifest for Vercel
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage' 
+# Use WhiteNoise for static files on Vercel
+if os.environ.get('VERCEL'):
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+else:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage' 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
