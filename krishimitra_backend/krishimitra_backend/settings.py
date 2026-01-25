@@ -13,13 +13,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
-from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Load environment variables from .env file
-load_dotenv(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -28,9 +24,9 @@ load_dotenv(BASE_DIR / '.env')
 SECRET_KEY = 'django-insecure-$i94$00=%dk#a$5&7t5+$b^39ez-8y&)%^5_bjct(o3k6h!=c*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  # Enable for now to see errors
+DEBUG = not os.environ.get('VERCEL')  # False when deployed on Vercel
 
-ALLOWED_HOSTS = ['*']  # Allow all hosts for testing
+ALLOWED_HOSTS = ['*'] if DEBUG else ['.vercel.app', '.now.sh']  # Allow all in dev, specific domains in prod
 
 # Gemini API Configuration
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
