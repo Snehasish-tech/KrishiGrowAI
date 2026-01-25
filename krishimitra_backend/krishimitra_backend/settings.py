@@ -13,10 +13,13 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load from parent directory
+load_dotenv(BASE_DIR.parent / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -30,7 +33,13 @@ DEBUG = True  # Enable for now to see errors
 ALLOWED_HOSTS = ['*']  # Allow all hosts for testing
 
 # Gemini API Configuration
-GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
+
+# Print for debugging (remove in production)
+if DEBUG:
+    print(f"🔑 Gemini API Key loaded: {'Yes' if GEMINI_API_KEY else 'No'}")
+    if GEMINI_API_KEY:
+        print(f"   Key preview: {GEMINI_API_KEY[:10]}...")
 
 
 # Application definition
@@ -73,7 +82,6 @@ TEMPLATES = [
         },
     },
 ]
-
 
 WSGI_APPLICATION = 'krishimitra_backend.wsgi.application'
 
@@ -148,10 +156,15 @@ for app in INSTALLED_APPS:
         STATICFILES_DIRS.append(app_path)
 
 # Simple storage without manifest for Vercel
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage' 
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+# CSRF trusted origins for development
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-

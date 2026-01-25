@@ -141,9 +141,7 @@ const cropDatabase = {
 // Chatbot Responses Database
 const chatbotResponses = {
     greetings: [
-        "Hello! How can I assist you with your farming needs today? 🌾",
-        "Hi there! I'm here to help with all your agricultural questions! 🚜",
-        "Welcome! What farming challenges can I help you solve? 🌱"
+        "Hello! I'm KrishiMitra, your AI farming assistant. How can I help you today? 🌾",
     ],
     weather: [
         "Weather is crucial for farming! Our system provides real-time weather data including temperature, humidity, rainfall probability, and wind speed. Would you like me to explain how weather affects specific crops? 🌤",
@@ -1400,7 +1398,10 @@ async function generateBotResponse(userMessage) {
 
         if (!response.ok) {
             const errorMessage = data.error || 'API request failed';
-            const details = data.details ? `\nDetails: ${data.details}` : '';
+            let details = '';
+            if (data.details) {
+                details = '\nDetails: ' + (typeof data.details === 'object' ? JSON.stringify(data.details) : data.details);
+            }
             throw new Error(`${errorMessage}${details}`);
         }
         
