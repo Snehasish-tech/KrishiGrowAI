@@ -141,8 +141,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# For local development - don't use STATIC_ROOT on Vercel
-STATIC_ROOT = None
+# For production (Vercel) - use STATIC_ROOT
+if not DEBUG:
+    STATIC_ROOT = BASE_DIR / 'staticfiles'
+else:
+    STATIC_ROOT = None
+
 STATICFILES_DIRS = []
 
 # Add all static directories
@@ -151,8 +155,11 @@ for app in INSTALLED_APPS:
     if app_path.exists():
         STATICFILES_DIRS.append(app_path)
 
-# Simple storage without manifest for Vercel
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+# Use WhiteNoise for static files in production
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+else:
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # CSRF trusted origins for development
 CSRF_TRUSTED_ORIGINS = [
