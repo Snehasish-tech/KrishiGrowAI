@@ -14,6 +14,13 @@ from pathlib import Path
 import os
 import dj_database_url
 
+# Add these lines
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  # In production, dotenv may not be available
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
