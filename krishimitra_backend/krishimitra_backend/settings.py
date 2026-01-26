@@ -14,6 +14,14 @@ from pathlib import Path
 import os
 import dj_database_url
 
+# Load .env for local development (do not fail if python-dotenv is missing in build environment)
+if not os.environ.get('VERCEL'):
+    try:
+        from dotenv import load_dotenv
+        load_dotenv()
+    except Exception:
+        pass
+
 # Add these lines
 try:
     from dotenv import load_dotenv
