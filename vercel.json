@@ -1,22 +1,21 @@
+
 {
   "version": 2,
   "builds": [
     {
-      "src": "api/wsgi.py",
+      "src": "krishimitra_backend/wsgi.py",
       "use": "@vercel/python",
       "config": {
         "maxLambdaSize": "15mb",
-        "runtime": "python3.11"
+        "runtime": "python3.11",
+        "buildCommand": "bash build_files.sh"
       }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "api/wsgi.py"
+      "dest": "krishimitra_backend/wsgi.py"
     }
-  ],
-  "env": {
-    "VERCEL": "1"
-  }
+  ]
 }
