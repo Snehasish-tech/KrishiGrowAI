@@ -141,15 +141,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# For production (Vercel) - use STATIC_ROOT
-if not DEBUG:
-    STATIC_ROOT = BASE_DIR / 'staticfiles'
-else:
-    STATIC_ROOT = None
+# Use a fixed STATIC_ROOT so collectstatic works both during build and at runtime
+# Collectstatic will copy files into this directory: BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATICFILES_DIRS = []
 
-# Add all static directories
+# Add all static directories from apps
 for app in INSTALLED_APPS:
     app_path = BASE_DIR / app.split('.')[-1] / 'static'
     if app_path.exists():
